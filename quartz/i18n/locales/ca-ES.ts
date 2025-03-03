@@ -34,6 +34,7 @@ export default {
     },
     footer: {
       createdWith: "Creat amb",
+      createdBy: "Creat per",
     },
     graph: {
       title: "Vista Gràfica",

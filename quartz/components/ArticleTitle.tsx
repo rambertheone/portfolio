@@ -1,8 +1,14 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
+import { EXCLUDE_SLUGS } from "../util/constants"
 
 const ArticleTitle: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
   const title = fileData.frontmatter?.title
+  // Removes title if index page
+  if (EXCLUDE_SLUGS.includes(fileData.slug || "")) {
+    return <></>
+  }
+
   if (title) {
     return <h1 class={classNames(displayClass, "article-title")}>{title}</h1>
   } else {

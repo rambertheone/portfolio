@@ -7,33 +7,16 @@ import { ExplorerNode, FileNode, Options } from "./ExplorerNode"
 import { QuartzPluginData } from "../plugins/vfile"
 import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
+import { mapFn, filterFn, sortFn } from "../util/functions"
 
 // Options interface defined in `ExplorerNode` to avoid circular dependency
 const defaultOptions = {
   folderClickBehavior: "collapse",
   folderDefaultState: "collapsed",
   useSavedState: true,
-  mapFn: (node) => {
-    return node
-  },
-  sortFn: (a, b) => {
-    // Sort order: folders first, then files. Sort folders and files alphabetically
-    if ((!a.file && !b.file) || (a.file && b.file)) {
-      // numeric: true: Whether numeric collation should be used, such that "1" < "2" < "10"
-      // sensitivity: "base": Only strings that differ in base letters compare as unequal. Examples: a ≠ b, a = á, a = A
-      return a.displayName.localeCompare(b.displayName, undefined, {
-        numeric: true,
-        sensitivity: "base",
-      })
-    }
-
-    if (a.file && !b.file) {
-      return 1
-    } else {
-      return -1
-    }
-  },
-  filterFn: (node) => node.name !== "tags",
+  mapFn: mapFn,
+  sortFn: sortFn,
+  filterFn: filterFn,
   order: ["filter", "map", "sort"],
 } satisfies Options
 
@@ -124,7 +107,7 @@ export default ((userOpts?: Partial<Options>) => {
           aria-controls="explorer-content"
           aria-expanded={true}
         >
-          <h2>{opts.title ?? i18n(cfg.locale).components.explorer.title}</h2>
+          {/* <h2>{opts.title ?? i18n(cfg.locale).components.explorer.title}</h2>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"
@@ -138,10 +121,11 @@ export default ((userOpts?: Partial<Options>) => {
             class="fold"
           >
             <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          </svg> */}
         </button>
+
         <div id="explorer-content">
-          <ul class="overflow" id="explorer-ul">
+          <ul class="overflow" id="explorer-ul" style={{ textAlign: "center", padding: "0.5rem" }}>
             <ExplorerNode node={fileTree} opts={opts} fileData={fileData} />
             <li id="explorer-end" />
           </ul>

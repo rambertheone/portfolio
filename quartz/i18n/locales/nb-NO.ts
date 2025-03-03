@@ -34,6 +34,7 @@ export default {
     },
     footer: {
       createdWith: "Laget med",
+      createdBy: "Laget av",
     },
     graph: {
       title: "Graf-visning",

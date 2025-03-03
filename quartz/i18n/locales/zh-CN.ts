@@ -34,6 +34,7 @@ export default {
     },
     footer: {
       createdWith: "Created with",
+      createdBy: "Created by",
     },
     graph: {
       title: "关系图谱",

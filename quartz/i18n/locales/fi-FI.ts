@@ -34,6 +34,7 @@ export default {
     },
     footer: {
       createdWith: "Luotu käyttäen",
+      createdBy: "Luotu",
     },
     graph: {
       title: "Verkkonäkymä",

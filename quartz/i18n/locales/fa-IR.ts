@@ -34,6 +34,7 @@ export default {
     },
     footer: {
       createdWith: "ساخته شده با",
+      createdBy: "ساخته شده توسط",
     },
     graph: {
       title: "نمای گراف",

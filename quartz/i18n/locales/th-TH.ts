@@ -34,6 +34,7 @@ export default {
     },
     footer: {
       createdWith: "สร้างด้วย",
+      createdBy: "สร้างโดย",
     },
     graph: {
       title: "มุมมองกราฟ",

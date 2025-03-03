@@ -70,7 +70,7 @@ strong {
 }
 
 a {
-  font-weight: $semiBoldWeight;
+  font-weight: $normalWeight;
   text-decoration: none;
   transition: color 0.2s ease;
   color: var(--secondary);
@@ -185,7 +185,7 @@ a {
       gap: 2rem;
       top: 0;
       box-sizing: border-box;
-      padding: $topSpacing 2rem 2rem 2rem;
+      padding: $topSpacing 0rem 2rem 0rem;
       display: flex;
       height: 100vh;
       position: sticky;
@@ -193,6 +193,7 @@ a {
 
     & .sidebar.left {
       z-index: 1;
+      gap: 0rem;
       grid-area: grid-sidebar-left;
       flex-direction: column;
       @media all and ($mobile) {
@@ -204,6 +205,10 @@ a {
         flex-direction: row;
         padding: 0;
         padding-top: 2rem;
+      }
+
+      @media only screen and (min-width: 1200px) {
+        border-right: 1px solid var(--lightgray);
       }
     }
 
