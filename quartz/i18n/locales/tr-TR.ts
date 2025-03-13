@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Şununla oluşturuldu",
       createdBy: "Oluşturan",
+      poweredBy: "Powered by",
     },
     graph: {
       title: "Grafik Görünümü",

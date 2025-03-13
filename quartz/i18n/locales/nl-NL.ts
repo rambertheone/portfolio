@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Gemaakt met",
       createdBy: "Gemaakt door",
+      poweredBy: "Powered by",
     },
     graph: {
       title: "Grafiekweergave",

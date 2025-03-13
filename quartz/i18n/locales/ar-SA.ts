@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "أُنشئ باستخدام",
       createdBy: "أُنشئ بواسطة",
+      poweredBy: "مدعوم بواسطة",
     },
     graph: {
       title: "التمثيل التفاعلي",

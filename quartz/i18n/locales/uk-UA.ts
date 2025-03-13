@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Створено за допомогою",
       createdBy: "Створено",
+      poweredBy: "Підтримується",
     },
     graph: {
       title: "Вигляд графа",

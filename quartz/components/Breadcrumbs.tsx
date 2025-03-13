@@ -3,6 +3,7 @@ import breadcrumbsStyle from "./styles/breadcrumbs.scss"
 import { FullSlug, SimpleSlug, joinSegments, resolveRelative } from "../util/path"
 import { QuartzPluginData } from "../plugins/vfile"
 import { classNames } from "../util/lang"
+import { EXCLUDE_SLUGS } from "../util/constants"
 
 type CrumbData = {
   displayName: string
@@ -60,7 +61,7 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
     displayClass,
   }: QuartzComponentProps) => {
     // Hide crumbs on root if enabled
-    if (options.hideOnRoot && fileData.slug === "index") {
+    if (options.hideOnRoot && EXCLUDE_SLUGS.includes(fileData.slug!)) {
       return <></>
     }
 

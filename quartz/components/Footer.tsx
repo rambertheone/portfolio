@@ -15,13 +15,13 @@ export default ((opts?: Options) => {
     return (
       <footer class={`${displayClass ?? ""}`}>
         <p>
-          {i18n(cfg.locale).components.footer.createdBy}{" "}
-          <a href="https://rambertheone.com">rambertheone</a> © {year}
+          <a target="_self" href="https://rambertheone.com">© rambertheone {year}.</a>
+          <a target="_blank" href="https://github.com/jackyzha0/quartz"> {i18n(cfg.locale).components.footer.poweredBy} Quartz</a>
         </p>
         <ul>
           {Object.entries(links).map(([text, link]) => (
             <li>
-              <a href={link}>
+              <a target="_blank" href={link}>
               {SOCIAL_ICONS[text] ? <i className={SOCIAL_ICONS[text]}></i> : text}
               </a>
             </li>

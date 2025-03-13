@@ -5,6 +5,7 @@ import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
 import { JSX } from "preact"
 import style from "./styles/contentMeta.scss"
+import { EXCLUDE_SLUGS } from "../util/constants"
 
 interface ContentMetaOptions {
   /**
@@ -27,7 +28,7 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
     const text = fileData.text
 
     // Removes meta data if index
-    if (fileData.slug === "index") {
+    if (EXCLUDE_SLUGS.includes(fileData.slug!)) {
       return <></>
     }
 

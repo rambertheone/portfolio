@@ -24,8 +24,8 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: "Inter Semi Bold",
+        body: "Inter",
         code: "IBM Plex Mono",
       },
       colors: {
@@ -35,10 +35,10 @@ const config: QuartzConfig = {
           gray: "#b8b8b8",
           darkgray: "#4e4e4e",
           dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688",
+          secondary: "#a73636", // Changed from blue (#284b63) to red
+          tertiary: "#d88c8c", // Changed from teal to light red
+          highlight: "rgba(169, 143, 143, 0.15)", // Adjusted to reddish tint
+          textHighlight: "#ff8c8c88", // Changed to light red
         },
         darkMode: {
           light: "#161618",
@@ -46,10 +46,10 @@ const config: QuartzConfig = {
           gray: "#646464",
           darkgray: "#d4d4d4",
           dark: "#ebebec",
-          secondary: "#7b97aa",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
+          secondary: "#c27777", // Changed from blue (#7b97aa) to red
+          tertiary: "#b57c7c", // Changed from teal to light red
+          highlight: "rgba(169, 143, 143, 0.15)", // Adjusted to reddish tint
+          textHighlight: "#ff636388", // Changed to light red
         },
       },
     },

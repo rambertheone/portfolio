@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Stworzone z użyciem",
       createdBy: "Stworzone przez",
+      poweredBy: "Wspierane przez",
     },
     graph: {
       title: "Graf",

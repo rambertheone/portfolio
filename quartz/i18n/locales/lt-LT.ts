@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Sukurta Su",
       createdBy: "Sukurta",
+      poweredBy: "Powered by",
     },
     graph: {
       title: "Grafiko Vaizdas",

@@ -33,8 +33,9 @@ export default {
       title: "탐색기",
     },
     footer: {
-      createdWith: "Created with",
-      createdBy: "Created by",
+      createdWith: "제작 도구",
+      createdBy: "제작자",
+      poweredBy: "제공",
     },
     graph: {
       title: "그래프 뷰",

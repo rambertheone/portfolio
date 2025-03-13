@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Được tạo bởi",
       createdBy: "Tạo bởi",
+      poweredBy: "Powered by",
     },
     graph: {
       title: "Biểu Đồ",

@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Создано с помощью",
       createdBy: "Создано",
+      poweredBy: "Powered by",
     },
     graph: {
       title: "Вид графа",

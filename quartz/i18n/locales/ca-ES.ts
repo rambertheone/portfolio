@@ -35,6 +35,7 @@ export default {
     footer: {
       createdWith: "Creat amb",
       createdBy: "Creat per",
+      poweredBy: "Impulsat per",  
     },
     graph: {
       title: "Vista Gràfica",
