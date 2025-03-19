@@ -181,7 +181,7 @@ function initializeContact() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const observer = new MutationObserver(function (mutations) {
-    if (document.getElementById("youtube-latest")) {
+    if (document.getElementById("youtube-latest") && !isMobileDevice()) {
       checkAndInitYouTube();
     }
     if (document.getElementById("about")) {
@@ -196,9 +196,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  function isMobileDevice() {
+    return (window.innerWidth <= 768) || 
+           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+  }
+
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // checkAndInitYouTube();
+  // Only run YouTube initialization on non-mobile devices
+  if (!isMobileDevice() && document.getElementById("youtube-latest")) {
+    try {
+      checkAndInitYouTube();
+    } catch (error) {
+      console.error("YouTube initialization error:", error);
+      // Prevent the error from breaking other functionality
+    }
+  }
+
   progressBar();
   initializeProjects();
   initializeAbout();
