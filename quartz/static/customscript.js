@@ -53,10 +53,10 @@ function checkAndInitYouTube() {
       video.snippet.thumbnails.maxres?.url ||
       video.snippet.thumbnails.high?.url ||
       video.snippet.thumbnails.medium.url;
-
+  
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = publishedAt.toLocaleDateString("en-US", options);
-
+  
     const htmlString = `
       <div class="video-container">
         <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
@@ -67,7 +67,7 @@ function checkAndInitYouTube() {
       </div>
     `;
     container.innerHTML = unescapeHtml(htmlString);
-    container.setAttribute("data-loaded", "true");
+    container.setAttribute("data-loaded", "true"); // Mark as loaded
   }
 
   async function getLatestVideo() {
@@ -181,9 +181,9 @@ function initializeContact() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const observer = new MutationObserver(function (mutations) {
-    // if (document.getElementById("youtube-latest")) {
-    //   checkAndInitYouTube();
-    // }
+    if (document.getElementById("youtube-latest")) {
+      checkAndInitYouTube();
+    }
     if (document.getElementById("about")) {
       initializeAbout();
       progressBar();
