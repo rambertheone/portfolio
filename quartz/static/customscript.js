@@ -1,3 +1,8 @@
+function isMobileDevice() {
+  return (window.innerWidth <= 768) || 
+         (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+}
+
 function initializeProjects() {
   if (!document.querySelector(".filter-container")) return;
 
@@ -32,6 +37,12 @@ function initializeProjects() {
 function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
   if (!container || container.getAttribute("data-loaded") === "true") return;
+
+  if (isMobileDevice()) {
+    console.log(isMobileDevice());
+    displayMobileYouTubeAlternative(container);
+    return;
+  }
 
   container.textContent = "Loading latest video...";
 
@@ -179,9 +190,25 @@ function initializeContact() {
     }
 }
 
+function displayMobileYouTubeAlternative(container) {
+  // Static content for mobile devices
+  const mobileContent = `
+    <div class="video-container">
+        <a href="https://www.youtube.com/watch?v=FAAuFoIhU9U" target="_blank">
+          <img src="https://i.ytimg.com/vi/FAAuFoIhU9U/hqdefault.jpg" alt="Featured Video">
+        </a>
+        <p class="video-caption">Une semaine dans ma vie</p>
+        <p class="video-date">2023-12-03</p>
+      </div>
+  `;
+  
+  container.innerHTML = mobileContent;
+  container.setAttribute("data-loaded", "true");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const observer = new MutationObserver(function (mutations) {
-    if (document.getElementById("youtube-latest") && !isMobileDevice()) {
+    if (document.getElementById("youtube-latest")) {
       checkAndInitYouTube();
     }
     if (document.getElementById("about")) {
@@ -196,23 +223,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  function isMobileDevice() {
-    return (window.innerWidth <= 768) || 
-           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-  }
+
 
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // Only run YouTube initialization on non-mobile devices
-  if (!isMobileDevice() && document.getElementById("youtube-latest")) {
-    try {
-      checkAndInitYouTube();
-    } catch (error) {
-      console.error("YouTube initialization error:", error);
-      // Prevent the error from breaking other functionality
-    }
-  }
-
+  checkAndInitYouTube();
   progressBar();
   initializeProjects();
   initializeAbout();
