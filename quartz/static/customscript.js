@@ -181,9 +181,9 @@ function initializeContact() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const observer = new MutationObserver(function (mutations) {
-    if (document.getElementById("youtube-latest")) {
-      checkAndInitYouTube();
-    }
+    // if (document.getElementById("youtube-latest")) {
+    //   checkAndInitYouTube();
+    // }
     if (document.getElementById("about")) {
       initializeAbout();
       progressBar();
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   observer.observe(document.body, { childList: true, subtree: true });
 
-  checkAndInitYouTube();
+  // checkAndInitYouTube();
   progressBar();
   initializeProjects();
   initializeAbout();
