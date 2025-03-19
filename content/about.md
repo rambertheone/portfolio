@@ -43,29 +43,3 @@ draft: false
   <div class="collection-item tag-gadgets" data-category="gadgets">🎤 Blue Yeti <span class="item-description">Audio</span></div>
 </div>
 
-<style>
-  .item-description {
-    display: inline-block;
-    font-size: 0.8rem;
-    background-color: var(--accent-light);
-    color: var(--dark);
-    padding: 2px 6px;
-    margin-left: auto;
-    border-radius: 4px;
-    font-weight: 500;
-    opacity: 0.85;
-    float: right;
-  }
-
-  /* Make collection items use flexbox for better alignment */
-  .collection-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* Optional hover effect */
-  .collection-item:hover .item-description {
-    opacity: 1;
-  }
-</style>
