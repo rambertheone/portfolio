@@ -1,3 +1,431 @@
 @use "./base.scss";
 
 // put your custom CSS here!
+.special-title {
+    width: 250px;
+
+    padding-bottom: 1.5rem; 
+    margin: 0;
+    padding-left: 0rem;
+
+    font-size: 2rem; 
+    color: var(--dark);
+}
+.special-header {
+gap: 0rem; 
+border-bottom: 1px solid var(--lightgray); 
+padding-inline: 1rem;
+}
+
+.special-content {
+  padding-inline: 1rem;
+}
+
+.index_content {
+    display: flex; 
+    flex-direction: column; 
+
+    padding-inline: 1rem; 
+    gap: 0rem;
+    padding-top: 1rem;
+}
+
+.about_content {
+  display: flex; 
+  align-items: center; 
+  gap: 3rem; 
+  padding-inline: 1rem;
+}
+
+@media (max-width: 576px) {
+    .special-header {
+      padding-inline: 0;
+    }
+    .special-content {
+      padding-inline: 0;
+    }
+    .index_content {
+      padding-inline: 0;
+    }
+    .about_content {
+      padding-inline: 0;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      height: 75%;
+    }
+    .about_content img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+  }
+
+  // Index page
+  .video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    padding: 0px;
+    border-radius: 1rem;
+    width: 25rem;
+    margin: 0;
+    border: 1px solid var(--lightgray);
+  }
+  
+  .video-container img {
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+    transition: transform 0.3s ease-in-out;
+    margin: 0px;
+  }
+  .video-container:hover{
+    /* transform: scale(1.05); */
+    background-color: rgba(240, 240, 240, 0.5);
+  }
+  .video-caption {
+    padding-left: 10px;
+    color: var(--dark);
+    font-size: 16px;
+    margin: 5px 0px 0px 0px;
+    text-align: left;
+    align-self: left;
+  }
+  .video-date {
+    padding-left: 10px;
+    color: gray;
+    font-size: 14px;
+    margin-top: 0px;
+  }
+  .external-icon {
+    display: none;
+  }
+
+// Projects page
+
+.project-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .project-description {
+    font-size: 0.8rem;
+    color: var(--dark);
+  }
+  .project-card {
+    /* Box model */
+    overflow: hidden;
+    
+    /* Visual */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* Animation */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .project-image-link {
+    display: block;
+    overflow: hidden;
+    position: relative;  /* Add this to properly position the tag */
+  }
+  
+  .project-image {
+    /* Dimensions */
+    margin-top: 0;
+    width: 100%;
+    height: 13rem;
+    
+    /* Visual */
+    object-fit: cover;
+    
+    /* Animation */
+    transition: transform 0.5s ease;
+  }
+  
+  /* .project-image:hover {
+    transform: scale(1.05);
+  } */
+  
+  .project-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem 1rem 1rem 1rem;
+    background-color: var(--light);
+  }
+  
+  .project-title {
+    /* Box model */
+    margin: 0 0 0.5rem 0;
+    
+    /* Typography */
+    font-size: 1.2rem;
+    color: var(--dark);
+    font-family: var(--headerFont);
+    font-weight: 600;
+  }
+  
+  .project-description {
+    /* Box model */
+    margin: 0 0 1rem 0;
+    
+    /* Typography */
+    font-size: 0.9rem;
+    color: var(--darkgray);
+    text-align: center;
+    line-height: 1.4;
+  }
+  
+  .project-tag {
+    /* Positioning */
+    position: absolute;  /* Uncomment this line */
+    top: 10px;
+    right: 10px;
+    
+    /* Box model */
+    padding: 0.25rem 0.5rem;
+    
+    /* Visual */
+    background-color: var(--dark);
+    color: var(--light);
+    border-radius: 4px;
+    
+    /* Typography */
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .tag-personal {
+    background-color: #3498db;
+  }
+  
+  .tag-work {
+    background-color: #2ecc71;
+  }
+  
+  .tag-freelance {
+    background-color: #e74c3c;
+  }
+  
+  .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tool {
+    /* Positioning */
+    position: relative;;
+    
+    /* Display & Box model */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.5rem;
+    
+    /* Visual */
+    /* background-color: var(--lightgray, #f0f0f0); */
+    color: var(--dark);
+    border-radius: 50%;
+    
+    /* Typography */
+    font-size: 1rem;
+    
+    /* Animation */
+    transition: all 0.3s ease;
+  }
+  
+  .tool:hover {
+    transform: scale(1.2);
+  }
+  
+  .tool::after {
+    /* Content */
+    content: attr(title);
+    
+    /* Positioning */
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 5px;
+    
+    /* Box model */
+    padding: 0.25rem 0.5rem;
+    
+    /* Visual */
+    background-color: var(--dark);
+    color: var(--light);
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    
+    /* Typography */
+    font-size: 0.75rem;
+    white-space: nowrap;
+    
+    /* Animation */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .tool:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .tool i {
+    font-size: 1.5rem;
+  }
+  
+  .popover {
+    display: none;
+  }
+  
+  /* Filter styles */
+  .filter-container {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .filter-button {
+    padding: 0.5rem 1rem;
+    background-color: var(--lightgray);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--bodyFont);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .filter-button:hover {
+    background-color: var(--textHighlight);
+    color: var(--light);
+  }
+  
+  .filter-button.active {
+    background-color: var(--secondary);
+    color: var(--light);
+  }
+  
+  /* Hide filtered items */
+  .project-card.hidden {
+    display: none;
+  }
+  
+  // About page
+  /* Square Progress Bar Styles */
+.progress-bar {
+    display: flex;
+
+    gap: 4px;
+    
+    margin: 5px 0;
+  }
+  
+  .progress-bar::before {
+    content: " ";
+    display: flex;
+  }
+  
+  .progress-bar div {
+    display: inline-block;
+
+    width: 15px;
+    height: 15px;
+    
+    background-color: var(--lightgray);
+  }
+  
+  .progress-bar div.filled {
+    background-color: black;
+  }
+
+//filter/* Filter button styles */
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-button {
+    background-color: var(--lightgray);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .filter-button.active {
+    background-color: var(--secondary);
+    color: var(--light);
+  }
+  
+  .filter-button:hover {
+    background-color: var(--textHighlight);
+    color: var(--light);
+  }
+  
+  /* Collection item styles */
+  #collection {
+    margin-top: 1rem;
+  }
+  
+  .collection-item {
+    padding: 0.5rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+
+  .collection-item:hover {
+    background-color: rgba(240, 240, 240, 0.5);
+  }
+
+  .hidden {
+    display: none;
+  }
+  // about page
+  .item-description {
+    display: inline-block;
+    
+    padding: 2px 6px;
+    margin-left: auto;
+    border-radius: 4px;
+    
+    background-color: rgba(240, 240, 240, 0.5);
+    
+    font-size: 0.8rem;
+    color: var(--dark);
+    font-style: var(--headerFont);
+  }
+
+  /* Make collection items use flexbox for better alignment */
+  .collection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .collection-item:hover .item-description {
+    opacity: 1;
+  }
+// Contact page
+#contact {
+    padding: 2rem 10rem 0rem 10rem;
+}

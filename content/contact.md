@@ -3,23 +3,16 @@ title: contact
 draft: false
 ---
 
-## Contact Me  
+<div class="special-header">
+<i class="bi bi-send-fill" style="font-size: 4rem; color: var(--dark);"></i>
+<p class="special-title">Contact</p>
+</div>
 
-<form action="your-form-handler-url" method="POST" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px;">
-  
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+<div id="contact" class="special-content">
+  <p>You can use the form below to get in touch with me. I'll get back to you as soon as possible.</p>
+  <iframe data-tally-src="https://tally.so/embed/3qv1x7?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="276" frameborder="0" marginheight="0" marginwidth="0" title="Contact form
+"></iframe>
+</div>
 
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
 
-  <label for="message">Message:</label>
-  <textarea id="message" name="message" rows="4" required style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
 
-  <button type="submit" style="padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Send Message</button>
-
-</form>
-
-[[note]]
-
-# WOrks

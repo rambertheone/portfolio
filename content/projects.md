@@ -2,202 +2,71 @@
 title: projects
 draft: false
 ---
-<div style="gap: 0rem; border-bottom: 1px solid var(--lightgray); padding-inline: 5rem;">
+
+<div class="special-header">
 <i class="bi bi-power" style="font-size: 4rem; color: var(--dark);"></i>
-<p style="font-size: 2rem; padding-bottom: 1.5rem; color: var(--dark); margin: 0; padding-left: 0rem; width: 250px;">Projects</p>
+<p class="special-title">Projects</p>
 </div>
 
-<div style="padding-inline: 5rem;">
+<div class="special-content">
+
+<div id="filter" class="filter-container">
+  <button class="filter-button active" data-filter="all">All</button>
+  <button class="filter-button" data-filter="personal">Personal</button>
+  <button class="filter-button" data-filter="work">Work</button>
+  <button class="filter-button" data-filter="freelance">Freelance</button>
+</div>
 
 # [[2025]]
 
 <div class="project-cards">
-  <!-- <div class="project-card">
-    <a href="index.md" class="project-image-link">
-      <img src="/images/projects/bbqvalley.png" alt="BBQ Valley" class="project-image">
+  <div class="project-card">
+    <a href="portfolio.md" class="project-image-link">
+      <img src="https://res.cloudinary.com/dug5dnzf4/image/upload/v1741896307/portfolio_qzrcjy.png" alt="Portfolio" class="project-image">
+      <span class="project-tag tag-personal">Personal</span>
     </a>
     <div class="project-info">
-      <div class="project-title">BBQ Valley</div>
+      <div class="project-title">Portfolio</div>
+      <div class="project-description">A digital garden to show my projects and thoughts</div>
       <div class="project-tools">
-        <span class="tool" title="Vue.js"><i class="bi bi-code-slash"></i></span>
-        <span class="tool" title="Firebase"><i class="bi bi-fire"></i></span>
-        <span class="tool" title="Tailwind CSS"><i class="bi bi-palette"></i></span>
+        <span class="tool" title="Vercel"><img src="/images/icons/vercel.svg" alt="Vercel" class="tool-image"></span>
+        <span class="tool" title="Preact"><img src="/images/icons/preact.svg" alt="Preact" class="tool-image"></span>
+        <span class="tool" title="Quartz"><img src="/images/icons/icon.png" alt="Quartz" class="tool-image"></span>
+        <span class="tool" title="Markdown"><img src="/images/icons/markdown.svg" alt="Markdown" class="tool-image"></span>
       </div>
     </div>
-  </div> -->
-</div>
-
-# [[index | 2024]]
-
-<div class="project-cards">
-  <!-- Project Card Template
+  </div>
   <div class="project-card">
-    <a href="PROJECT_URL" class="project-image-link">
-      <img src="PATH_TO_IMAGE" alt="PROJECT_NAME" class="project-image">
+    <a href="pivot.md" class="project-image-link">
+      <img src="https://res.cloudinary.com/dug5dnzf4/image/upload/v1742369423/Screenshot_2025-03-19_alle_3.29.32_AM_sn8omu.png" alt="Pivot" class="project-image">
+      <span class="project-tag tag-work">Work</span>
     </a>
     <div class="project-info">
-      <div class="project-title">PROJECT_NAME</div>
+      <div class="project-title">Pivot</div>
+      <div class="project-description">Development internship <strong>@</strong> Pivot</div>
       <div class="project-tools">
-        <span class="tool">Tool 1</span>
-        <span class="tool">Tool 2</span>
-        <span class="tool">Tool 3</span>
-      </div>
-    </div>
-  </div> -->
-  <div class="project-card">
-    <a href="index.md" class="project-image-link">
-      <img src="/images/projects/bbqvalley.png" alt="BBQ Valley" class="project-image">
-    </a>
-    <div class="project-info">
-      <div class="project-title">BBQ Valley</div>
-      <div class="project-tools">
-        <span class="tool" title="Vue.js"><i class="bi bi-code-slash"></i></span>
-        <span class="tool" title="Firebase"><i class="bi bi-fire"></i></span>
-        <span class="tool" title="Tailwind CSS"><i class="bi bi-palette"></i></span>
+        <span class="tool" title="React"><img src="/images/icons/react.svg" alt="React" class="tool-image"></span>
+        <span class="tool" title="Firebase"><img src="/images/icons/firebase.svg" alt="Firebase" class="tool-image"></span>
+        <span class="tool" title="Clean Architecture"><img src="https://huygens.io/icons/clean_architecture.svg" alt="Clean Architecture" class="tool-image"></span>
       </div>
     </div>
   </div>
 </div>
 
-<style>
-.project-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-.project-description {
-  font-size: 0.8rem;
-  color: var(--dark);
-}
-.project-card {
-  /* Box model */
-  overflow: hidden;
-  
-  /* Visual */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-  /* Animation */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
+# [[index | 2024]]
 
-.project-image-link {
-  display: block;
-  overflow: hidden;
-}
-
-.project-image {
-  /* Dimensions */
-  width: 100%;
-  
-  /* Visual */
-  object-fit: cover;
-  
-  /* Animation */
-  transition: transform 0.5s ease;
-}
-
-/* .project-image:hover {
-  transform: scale(1.05);
-} */
-
-.project-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0rem 1rem 1rem 1rem;
-  background-color: var(--light);
-}
-
-.project-title {
-  /* Box model */
-  margin: 0 0 1rem 0;
-  
-  /* Typography */
-  font-size: 1rem;
-  color: var(--dark);
-}
-
-.project-tools {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tool {
-  /* Positioning */
-  position: relative;
-  
-  /* Display & Box model */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  padding: 0.5rem;
-  
-  /* Visual */
-  /* background-color: var(--lightgray, #f0f0f0); */
-  color: var(--dark);
-  border-radius: 50%;
-  
-  /* Typography */
-  font-size: 1rem;
-  
-  /* Animation */
-  transition: all 0.3s ease;
-}
-
-.tool:hover {
-  transform: scale(1.2);
-}
-
-.tool::after {
-  /* Content */
-  content: attr(title);
-  
-  /* Positioning */
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 5px;
-  
-  /* Box model */
-  padding: 0.25rem 0.5rem;
-  
-  /* Visual */
-  background-color: var(--dark);
-  color: var(--light);
-  border-radius: 4px;
-  opacity: 0;
-  visibility: hidden;
-  
-  /* Typography */
-  font-size: 0.75rem;
-  white-space: nowrap;
-  
-  /* Animation */
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.tool:hover::after {
-  opacity: 1;
-  visibility: visible;
-}
-
-.tool i {
-  font-size: 1.5rem;
-}
-
-.popover {
-  display: none;
-}
-</style>
+<div class="project-cards">
+  <div class="project-card">
+    <a href="BBQValley.md" class="project-image-link">
+      <img src="https://res.cloudinary.com/dug5dnzf4/image/upload/v1741896306/bbqvalley_uk0ihi.png" alt="BBQ Valley" class="project-image">
+      <span class="project-tag tag-personal">Personal</span>
+    </a>
+    <div class="project-info">
+      <div class="project-title">BBQ Valley</div>
+      <div class="project-tools">
+        <span class="tool" title="JavaScript"><img src="/images/icons/javascript.svg" alt="JavaScript" class="tool-image"></span>
+      </div>
+    </div>
+  </div>
+</div>

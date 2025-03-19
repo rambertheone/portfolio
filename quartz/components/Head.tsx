@@ -120,8 +120,9 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-
-    const iconPath = joinSegments(baseDir, "static/icon.png")
+    console.log(baseDir)
+    const iconPath = joinSegments(baseDir, "static/logo.svg")
+    const scriptPath = joinSegments(baseDir, "static/customscript.js")
 
     const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
     // "static/social-images/slug-filename.md.webp"
@@ -156,6 +157,7 @@ export default (() => {
 
     return (
       <head>
+
         <title>{title}</title>
         <meta charSet="utf-8" />
         <link
@@ -201,6 +203,7 @@ export default (() => {
         <link rel="icon" href={iconPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
+        <script src={scriptPath}></script>
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
         {js
           .filter((resource) => resource.loadTime === "beforeDOMReady")

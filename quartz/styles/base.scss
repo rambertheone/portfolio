@@ -120,6 +120,12 @@ a {
   @media all and ($mobile) {
     display: initial;
   }
+  &.special-header {
+    padding-inline: 0;
+    @media all and ($mobile) {
+      display: initial;
+    }
+  }
 }
 
 .page {

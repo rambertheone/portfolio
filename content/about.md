@@ -2,45 +2,70 @@
 title: about
 draft: false
 ---
-<div style="gap: 0rem; border-bottom: 1px solid var(--lightgray); padding-inline: 5rem;">
+<div class="special-header">
 <i class="bi bi-person-fill" style="font-size: 4rem; color: var(--dark);"></i>
-<p style="font-size: 2rem; padding-bottom: 1.5rem; color: var(--dark); margin: 0; padding-left: 0rem; width: 250px;">About</p>
+<p class="special-title">About</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 20px; max-width: 600px; padding-inline: 5rem;">
-
+<div id="about" class="about_content">
   <div style="flex: 1;">
     <h2>Hi, I'm Rambert</h2>
     <p>I love poetry, especially Baudelaire and Rimbaud, and I enjoy coding.</p>
     <p>Currently, I'm doing my stage @ <strong>Pivot</strong> using <strong>React</strong> and <strong>React Native</strong> to build web and mobile apps.</p>
     <p>As a <strong>Developer</strong>, I just want to make things work.</p>
   </div>
-  <img src="about.jpg" alt="Rambert's Photo" width="281" style="border-radius: 5%;">
+  <img src="about.jpg" alt="Rambert's Photo" width="281" style="border-radius: 5px;">
 </div>
 
-<div style="padding-inline: 5rem;">
+<div style="padding-inline: 1rem;">
 
 # Pursuits
 
 | Interest         | Years of Experience |
 |-----------------|--------------------|
-| 🏋️ Gym     | <progress value="5" max="10" style="accent-color: var(--secondary);"></progress> (5/10) |
-| 🥊 Boxing     | <progress value="3" max="10" style="accent-color: var(--secondary);"></progress> (3/10) |
-| 📹 Making Videos | <progress value="3" max="10" style="accent-color: var(--secondary);"></progress> (3/10) |
-| ✍🏿 Poetry     | <progress value="3" max="10" style="accent-color: var(--secondary);"></progress> (3/10) |
+| 🏋🏿‍♂️ Gym     | <div class="progress-bar" data-level="5"></div> |
+| 🥊 Boxing     | <div class="progress-bar" data-level="3"></div> |
+| 📹 Making Videos | <div class="progress-bar" data-level="3"></div> |
+| ✍🏿 Poetry     | <div class="progress-bar" data-level="3"></div> |
 
 # Products I Use
-
-| Category  | Product Name           | Description      |
-|-----------|------------------------|------------------|
-| 🎥 Cameras |[**Sony A7SIII**](https://www.sony.ca/electronics/interchangeable-lens-cameras/ilce-7siii)      | Main Digital Camera     |
-| 🎥 Cameras | **Sony Alpha FX3**      | Second Camera   |
-| 🖥️ Software | _(You can add your software list here if needed.)_ | — |
-| 🔧 Gadgets | **Sony 24-70mm F2.8**    | Lens            |
-| 🔧 Gadgets | **Ulanzi Zero F38**     | Tripod          |
-| 🔧 Gadgets | **Godox SL-60**         | Main Light      |
-| 🔧 Gadgets | **Softbox Soft Light**  | Main Light      |
-[[test]]
-
+<div class="filter-buttons">
+  <button class="filter-button active" data-category="all">All</button>
+  <button class="filter-button" data-category="camera">Cameras</button>
+  <button class="filter-button" data-category="software">Software</button>
+  <button class="filter-button" data-category="gadgets">Gadgets</button>
 </div>
 
+<div id="collection">
+  <div class="collection-item tag-camera" data-category="camera">📹 Panasonic NV-GS150<span class="item-description">Camcorder</span></div>
+  <div class="collection-item tag-camera" data-category="camera">📷 Olympus Pen E-P2 <span class="item-description">Main Camera</span></div>
+  <div class="collection-item tag-software" data-category="software">🎬 Final Cut Pro <span class="item-description">Editing</span></div>
+  <div class="collection-item tag-gadgets" data-category="gadgets">🎤 Blue Yeti <span class="item-description">Audio</span></div>
+</div>
+
+<style>
+  .item-description {
+    display: inline-block;
+    font-size: 0.8rem;
+    background-color: var(--accent-light);
+    color: var(--dark);
+    padding: 2px 6px;
+    margin-left: auto;
+    border-radius: 4px;
+    font-weight: 500;
+    opacity: 0.85;
+    float: right;
+  }
+
+  /* Make collection items use flexbox for better alignment */
+  .collection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Optional hover effect */
+  .collection-item:hover .item-description {
+    opacity: 1;
+  }
+</style>
