@@ -3,7 +3,7 @@ title: index
 draft: false
 ---
 <div class="special-header">
-<img src="/images/icons/logo.svg" alt="image" style=" height: auto; align-self: center; stroke: var(--dark);"/>
+<img src="https://res.cloudinary.com/dug5dnzf4/image/upload/v1742398736/logo_py7ch4.svg" alt="image" style=" height: auto; align-self: center; stroke: var(--dark);"/>
 <p class="special-title">rambertheone</p>
 </div>
 
