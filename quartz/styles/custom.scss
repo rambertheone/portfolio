@@ -299,6 +299,8 @@ padding-inline: 1rem;
     display: flex;
     gap: 1rem;
     margin: 2rem 0;
+
+    color: var(--dark);
   }
   
   .filter-button {
@@ -409,7 +411,7 @@ padding-inline: 1rem;
     border-radius: 4px;
     
     background-color: rgba(240, 240, 240, 0.5);
-    
+
     font-size: 0.8rem;
     color: var(--dark);
     font-style: var(--headerFont);
