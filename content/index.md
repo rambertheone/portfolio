@@ -9,7 +9,7 @@ draft: false
 
 <div class="index_content">
 
-👋🏿 Yo, I'm Rambert. I'm a developper that sometimes writes poetry. CS **@** John Abbott College
+👋🏿 Yo, I'm Rambert. I'm a developer that sometimes writes poetry. CS **@** John Abbott College
 
 ### My Latest Video
 <div id="youtube-latest">

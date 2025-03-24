@@ -207,26 +207,63 @@ function displayMobileYouTubeAlternative(container) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const observer = new MutationObserver(function (mutations) {
-    if (document.getElementById("youtube-latest")) {
-      checkAndInitYouTube();
-    }
-    if (document.getElementById("about")) {
-      initializeAbout();
-      progressBar();
-    }
-    if (document.getElementById("filter")) {
-      initializeProjects();
-    }
-    if (document.getElementById("contact")) {
-      initializeContact();
-    }
-  });
-
-
-
-  observer.observe(document.body, { childList: true, subtree: true });
-
+  // Replace the single observer with multiple targeted observers
+  
+  // Observer for YouTube component
+  if (document.getElementById("youtube-latest")) {
+    checkAndInitYouTube();
+  } else {
+    const youtubeObserver = new MutationObserver(function(mutations) {
+      if (document.getElementById("youtube-latest")) {
+        checkAndInitYouTube();
+        youtubeObserver.disconnect(); // Disconnect once found and initialized
+      }
+    });
+    youtubeObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  
+  // Observer for About section
+  if (document.getElementById("about")) {
+    initializeAbout();
+    progressBar();
+  } else {
+    const aboutObserver = new MutationObserver(function(mutations) {
+      if (document.getElementById("about")) {
+        initializeAbout();
+        progressBar();
+        aboutObserver.disconnect(); // Disconnect once found and initialized
+      }
+    });
+    aboutObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  
+  // Observer for Projects/Filter section
+  if (document.getElementById("filter")) {
+    initializeProjects();
+  } else {
+    const projectsObserver = new MutationObserver(function(mutations) {
+      if (document.getElementById("filter")) {
+        initializeProjects();
+        projectsObserver.disconnect(); // Disconnect once found and initialized
+      }
+    });
+    projectsObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  
+  // Observer for Contact section
+  if (document.getElementById("contact")) {
+    initializeContact();
+  } else {
+    const contactObserver = new MutationObserver(function(mutations) {
+      if (document.getElementById("contact")) {
+        initializeContact();
+        contactObserver.disconnect(); // Disconnect once found and initialized
+      }
+    });
+    contactObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  
+  // Initial call to functions if elements already exist in the DOM
   checkAndInitYouTube();
   progressBar();
   initializeProjects();
