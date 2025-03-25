@@ -189,7 +189,7 @@ function SetupNavigationHandlers() {
       
       if (link.hostname === window.location.hostname && !link.target) {
         setTimeout(() => {
-          checkAndInitYouTube();
+          CheckAndInitializeYouTube();
         }, 100);
       }
     }
@@ -197,7 +197,7 @@ function SetupNavigationHandlers() {
   
   window.addEventListener('popstate', function() {
     setTimeout(() => {
-      checkAndInitYouTube();
+      CheckAndInitializeYouTube();
     }, 100);
   });
 }
@@ -207,11 +207,11 @@ document.addEventListener("DOMContentLoaded", function () {
   SetupNavigationHandlers();
   
   if (document.getElementById("youtube-latest")) {
-    checkAndInitYouTube();
+    CheckAndInitializeYouTube();
   } else {
     const youtubeObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("youtube-latest")) {
-        checkAndInitYouTube();
+        CheckAndInitializeYouTube();
         youtubeObserver.disconnect();
       }
     });
