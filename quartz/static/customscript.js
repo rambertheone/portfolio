@@ -46,7 +46,7 @@ function checkAndInitYouTube() {
 
   container.textContent = "Loading latest video...";
 
-  const apiUrl = `https://portfolio-backend-five-lovat.vercel.app/api/youtube`;
+  const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
   const cacheKey = "youtube_latest_video";
   const cacheExpiry = 3600000;
 
