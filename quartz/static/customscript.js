@@ -211,8 +211,33 @@ function displayMobileYouTubeAlternative(container) {
   container.setAttribute("data-loaded", "true");
 }
 
+function setupNavigationHandler() {
+  // For regular anchor links
+  document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A' || e.target.closest('a')) {
+      const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+      
+      // Only handle internal links that don't open in new tabs
+      if (link.hostname === window.location.hostname && !link.target) {
+        // Set a flag to check Youtube container on next tick
+        setTimeout(() => {
+          checkAndInitYouTube();
+        }, 100);
+      }
+    }
+  });
+  
+  // For history navigation (back/forward buttons)
+  window.addEventListener('popstate', function() {
+    setTimeout(() => {
+      checkAndInitYouTube();
+    }, 100);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-  // Replace the single observer with multiple targeted observers
+  
+  setupNavigationHandler();
   
   // Observer for YouTube component
   if (document.getElementById("youtube-latest")) {
@@ -269,9 +294,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
   // Initial call to functions if elements already exist in the DOM
-  checkAndInitYouTube();
-  progressBar();
-  initializeProjects();
-  initializeAbout();
-  initializeContact();
+  // checkAndInitYouTube();
+  // progressBar();
+  // initializeProjects();
+  // initializeAbout();
+  // initializeContact();
 });
