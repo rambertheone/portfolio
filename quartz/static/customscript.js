@@ -36,7 +36,7 @@ function initializeProjects() {
 
 function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
-  if (!container || container.getAttribute("data-loaded") === "true") return;
+  // if (!container || container.getAttribute("data-loaded") === "true") return;
 
   // if (isMobileDevice()) {
   //   console.log(isMobileDevice());
@@ -107,6 +107,12 @@ function checkAndInitYouTube() {
     }
   }
 
+  if (container.querySelector('.video-container') && container.getAttribute("data-loaded") === "true") {
+    return; 
+  }
+
+  container.textContent = "Loading latest video...";
+
   const cachedData = localStorage.getItem(cacheKey);
   if (cachedData) {
     try {
@@ -114,7 +120,6 @@ function checkAndInitYouTube() {
       if (cacheExpiry > Date.now() - timestamp) {
         renderVideo(videoData);
       } else {
-        // container.textContent = "Loading latest video...";
         localStorage.removeItem(cacheKey);
         getLatestVideo();
       }
