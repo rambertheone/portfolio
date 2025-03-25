@@ -13,13 +13,7 @@ draft: false
 
 ### My Latest Video
 <div id="youtube-latest">
-  <div class="video-container">
-        <a href="https://www.youtube.com/watch?v=FAAuFoIhU9U" target="_blank">
-          <img src="https://i.ytimg.com/vi/FAAuFoIhU9U/hqdefault.jpg" alt="Featured Video">
-        </a>
-        <p class="video-caption">Une semaine dans ma vie</p>
-        <p class="video-date">2023-12-03</p>
-      </div>
+  <p>Loading latest video...</p>
 </div>
 
 ### Blog Posts
