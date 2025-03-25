@@ -1,3 +1,135 @@
+// Store observers globally so we can manage them
+const observers = {
+  youtube: null,
+  about: null,
+  projects: null,
+  contact: null
+};
+
+// Function to safely disconnect and reconnect observers
+function resetObserver(key) {
+  if (observers[key]) {
+    observers[key].disconnect();
+  }
+  
+  const config = {
+    youtube: {
+      id: "youtube-latest",
+      callback: checkAndInitYouTube
+    },
+    about: {
+      id: "about",
+      callback: () => {
+        initializeAbout();
+        progressBar();
+      }
+    },
+    projects: {
+      id: "filter",
+      callback: initializeProjects
+    },
+    contact: {
+      id: "contact",
+      callback: initializeContact
+    }
+  };
+
+  const { id, callback } = config[key];
+  
+  observers[key] = new MutationObserver((mutations) => {
+    if (document.getElementById(id)) {
+      callback();
+    }
+  });
+
+  observers[key].observe(document.body, { childList: true, subtree: true });
+}
+
+// Function to handle navigation events
+function handleNavigation() {
+  // Reset all observers
+  Object.keys(observers).forEach(key => resetObserver(key));
+  
+  // Initialize components based on current content
+  if (document.getElementById("youtube-latest")) {
+    checkAndInitYouTube();
+  }
+  if (document.getElementById("about")) {
+    initializeAbout();
+    progressBar();
+  }
+  if (document.getElementById("filter")) {
+    initializeProjects();
+  }
+  if (document.getElementById("contact")) {
+    initializeContact();
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Initial setup
+  handleNavigation();
+  
+  // Handle navigation events
+  window.addEventListener('popstate', () => {
+    setTimeout(handleNavigation, 50);
+  });
+
+  // Handle link clicks
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (link && link.hostname === window.location.hostname) {
+      setTimeout(handleNavigation, 50);
+    }
+  });
+});
+
+// Update your initialization functions to handle reconnection
+function checkAndInitYouTube() {
+  const container = document.getElementById("youtube-latest");
+  if (!container) return;
+
+  // Only proceed if not already loaded or if content is missing
+  if (!container.querySelector('.video-container')) {
+    container.textContent = "Loading latest video...";
+    // ... rest of your YouTube loading logic ...
+  }
+}
+
+function initializeProjects() {
+  if (!document.querySelector(".filter-container")) return;
+
+  const filterButtons = document.querySelectorAll(".filter-button");
+  const projectCards = document.querySelectorAll(".project-card");
+
+  // Clean up existing listeners
+  filterButtons.forEach(button => {
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+  });
+
+  // Reattach listeners
+  document.querySelectorAll(".filter-button").forEach(button => {
+    button.addEventListener("click", handleFilterClick);
+  });
+}
+
+function initializeAbout() {
+  const filterButtons = document.querySelectorAll(".filter-button");
+  if (!filterButtons.length) return;
+
+  // Clean up existing listeners
+  filterButtons.forEach(button => {
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+  });
+
+  // Reattach listeners
+  document.querySelectorAll(".filter-button").forEach(button => {
+    button.addEventListener("click", handleFilterClick);
+  });
+}
+
 function InitializeProjects() {
   if (!document.querySelector(".filter-container")) return;
 
@@ -212,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const youtubeObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("youtube-latest")) {
         CheckAndInitializeYouTube();
-        youtubeObserver.disconnect();
+        // youtubeObserver.disconnect();
       }
     });
     youtubeObserver.observe(document.body, { childList: true, subtree: true });
@@ -226,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (document.getElementById("about")) {
         InitializeAbout();
         InitializeProgressBar();
-        aboutObserver.disconnect();
+        // aboutObserver.disconnect();
       }
     });
     aboutObserver.observe(document.body, { childList: true, subtree: true });
@@ -238,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const projectsObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("filter")) {
         InitializeProjects();
-        projectsObserver.disconnect();
+        // projectsObserver.disconnect();
       }
     });
     projectsObserver.observe(document.body, { childList: true, subtree: true });
@@ -250,7 +382,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("contact")) {
         InitializeContact();
-        contactObserver.disconnect();
+        // contactObserver.disconnect();
       }
     });
     contactObserver.observe(document.body, { childList: true, subtree: true });

@@ -14,7 +14,10 @@
 .special-header {
 gap: 0rem; 
 border-bottom: 1px solid var(--lightgray); 
-padding-inline: 1rem;
+padding-inline: 0 1rem 1rem 1rem; 
+ img {
+  margin-top: 0;
+ }
 }
 
 .special-content {
