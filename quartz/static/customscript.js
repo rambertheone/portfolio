@@ -38,11 +38,11 @@ function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
   if (!container || container.getAttribute("data-loaded") === "true") return;
 
-  if (isMobileDevice()) {
-    console.log(isMobileDevice());
-    displayMobileYouTubeAlternative(container);
-    return;
-  }
+  // if (isMobileDevice()) {
+  //   console.log(isMobileDevice());
+  //   displayMobileYouTubeAlternative(container);
+  //   return;
+  // }
 
   container.textContent = "Loading latest video...";
 
