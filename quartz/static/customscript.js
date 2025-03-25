@@ -44,7 +44,6 @@ function checkAndInitYouTube() {
   //   return;
   // }
 
-  container.textContent = "Loading latest video...";
 
   const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
   const cacheKey = "youtube_latest_video";
@@ -115,6 +114,7 @@ function checkAndInitYouTube() {
       if (cacheExpiry > Date.now() - timestamp) {
         renderVideo(videoData);
       } else {
+        container.textContent = "Loading latest video...";
         localStorage.removeItem(cacheKey);
         getLatestVideo();
       }
