@@ -1,9 +1,4 @@
-function isMobileDevice() {
-  return (window.innerWidth <= 768) || 
-         (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-}
-
-function initializeProjects() {
+function InitializeProjects() {
   if (!document.querySelector(".filter-container")) return;
 
   const filterButtons = document.querySelectorAll(".filter-button");
@@ -11,11 +6,11 @@ function initializeProjects() {
 
   // Remove existing event listeners to avoid duplicates
   filterButtons.forEach(button => {
-    button.removeEventListener("click", handleFilterClick);
-    button.addEventListener("click", handleFilterClick);
+    button.removeEventListener("click", HandleFilterClick);
+    button.addEventListener("click", HandleFilterClick);
   });
 
-  function handleFilterClick() {
+  function HandleFilterClick() {
     filterButtons.forEach(btn => btn.classList.remove("active"));
     this.classList.add("active");
     const filterValue = this.getAttribute("data-filter");
@@ -34,28 +29,20 @@ function initializeProjects() {
   }
 }
 
-function checkAndInitYouTube() {
+function CheckAndInitializeYouTube() {
   const container = document.getElementById("youtube-latest");
-  // if (!container || container.getAttribute("data-loaded") === "true") return;
-
-  // if (isMobileDevice()) {
-  //   console.log(isMobileDevice());
-  //   displayMobileYouTubeAlternative(container);
-  //   return;
-  // }
-
 
   const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
   const cacheKey = "youtube_latest_video";
   const cacheExpiry = 3600000;
 
-  function unescapeHtml(html) {
+  function UnescapeHTML(html) {
     const textArea = document.createElement("textarea");
     textArea.innerHTML = html;
     return textArea.value;
   }
 
-  function renderVideo(video) {
+  function RenderVideo(video) {
     const videoId = video.id.videoId;
     const title = video.snippet.title;
     const publishedAt = new Date(video.snippet.publishedAt);
@@ -76,17 +63,17 @@ function checkAndInitYouTube() {
         <p class="video-date">${formattedDate}</p>
       </div>
     `;
-    container.innerHTML = unescapeHtml(htmlString);
+    container.innerHTML = UnescapeHTML(htmlString);
     container.setAttribute("data-loaded", "true"); // Mark as loaded
   }
 
-  async function getLatestVideo() {
+  async function GetLatestVideo() {
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
       if (!data.items) {
         console.log("No items found.");
-        container.innerHTML = unescapeHtml("<p>No items found.</p>");
+        container.innerHTML = UnescapeHTML("<p>No items found.</p>");
         return;
       }
       if (data.items.length > 0) {
@@ -96,14 +83,14 @@ function checkAndInitYouTube() {
           videoData: video,
         };
         localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-        renderVideo(video);
+        RenderVideo(video);
       } else {
         console.log("No videos found.");
-        container.innerHTML = unescapeHtml("<p>No videos found.</p>");
+        container.innerHTML = UnescapeHTML("<p>No videos found.</p>");
       }
     } catch (error) {
       console.error("Error fetching YouTube data:", error);
-      container.innerHTML = unescapeHtml("<p>Error loading latest video.</p>");
+      container.innerHTML = UnescapeHTML("<p>Error loading latest video.</p>");
     }
   }
 
@@ -118,21 +105,21 @@ function checkAndInitYouTube() {
     try {
       const { timestamp, videoData } = JSON.parse(cachedData);
       if (cacheExpiry > Date.now() - timestamp) {
-        renderVideo(videoData);
+        RenderVideo(videoData);
       } else {
         localStorage.removeItem(cacheKey);
-        getLatestVideo();
+        GetLatestVideo();
       }
     } catch (e) {
       console.error("Error parsing cached data:", e);
-      getLatestVideo();
+      GetLatestVideo();
     }
   } else {
-    getLatestVideo();
+    GetLatestVideo();
   }
 }
 
-function progressBar() {
+function InitializeProgressBar() {
   document.querySelectorAll(".progress-bar").forEach((bar) => {
     if (bar.getAttribute("data-processed") === "true") return;
 
@@ -147,7 +134,7 @@ function progressBar() {
   });
 }
 
-function initializeAbout() {
+function InitializeAbout() {
   const filterButtons = document.querySelectorAll(".filter-button");
   if (!filterButtons.length) return;
 
@@ -173,7 +160,7 @@ function initializeAbout() {
   }
 }
 
-function initializeContact() {
+function InitializeContact() {
   var d = document,
       w = "https://tally.so/widgets/embed.js",
       v = function () {
@@ -195,31 +182,12 @@ function initializeContact() {
     }
 }
 
-function displayMobileYouTubeAlternative(container) {
-  // Static content for mobile devices
-  const mobileContent = `
-    <div class="video-container">
-        <a href="https://www.youtube.com/watch?v=FAAuFoIhU9U" target="_blank">
-          <img src="https://i.ytimg.com/vi/FAAuFoIhU9U/hqdefault.jpg" alt="Featured Video">
-        </a>
-        <p class="video-caption">Une semaine dans ma vie</p>
-        <p class="video-date">2023-12-03</p>
-      </div>
-  `;
-  
-  container.innerHTML = mobileContent;
-  container.setAttribute("data-loaded", "true");
-}
-
-function setupNavigationHandler() {
-  // For regular anchor links
+function SetupNavigationHandlers() {
   document.addEventListener('click', function(e) {
     if (e.target.tagName === 'A' || e.target.closest('a')) {
       const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
       
-      // Only handle internal links that don't open in new tabs
       if (link.hostname === window.location.hostname && !link.target) {
-        // Set a flag to check Youtube container on next tick
         setTimeout(() => {
           checkAndInitYouTube();
         }, 100);
@@ -227,7 +195,6 @@ function setupNavigationHandler() {
     }
   });
   
-  // For history navigation (back/forward buttons)
   window.addEventListener('popstate', function() {
     setTimeout(() => {
       checkAndInitYouTube();
@@ -237,66 +204,55 @@ function setupNavigationHandler() {
 
 document.addEventListener("DOMContentLoaded", function () {
   
-  setupNavigationHandler();
+  SetupNavigationHandlers();
   
-  // Observer for YouTube component
   if (document.getElementById("youtube-latest")) {
     checkAndInitYouTube();
   } else {
     const youtubeObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("youtube-latest")) {
         checkAndInitYouTube();
-        youtubeObserver.disconnect(); // Disconnect once found and initialized
+        youtubeObserver.disconnect();
       }
     });
     youtubeObserver.observe(document.body, { childList: true, subtree: true });
   }
   
-  // Observer for About section
   if (document.getElementById("about")) {
-    initializeAbout();
-    progressBar();
+    InitializeAbout();
+    InitializeProgressBar();
   } else {
     const aboutObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("about")) {
-        initializeAbout();
-        progressBar();
-        aboutObserver.disconnect(); // Disconnect once found and initialized
+        InitializeAbout();
+        InitializeProgressBar();
+        aboutObserver.disconnect();
       }
     });
     aboutObserver.observe(document.body, { childList: true, subtree: true });
   }
   
-  // Observer for Projects/Filter section
   if (document.getElementById("filter")) {
-    initializeProjects();
+    InitializeProjects();
   } else {
     const projectsObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("filter")) {
-        initializeProjects();
-        projectsObserver.disconnect(); // Disconnect once found and initialized
+        InitializeProjects();
+        projectsObserver.disconnect();
       }
     });
     projectsObserver.observe(document.body, { childList: true, subtree: true });
   }
   
-  // Observer for Contact section
   if (document.getElementById("contact")) {
-    initializeContact();
+    InitializeContact();
   } else {
     const contactObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("contact")) {
-        initializeContact();
-        contactObserver.disconnect(); // Disconnect once found and initialized
+        InitializeContact();
+        contactObserver.disconnect();
       }
     });
     contactObserver.observe(document.body, { childList: true, subtree: true });
   }
-  
-  // Initial call to functions if elements already exist in the DOM
-  // checkAndInitYouTube();
-  // progressBar();
-  // initializeProjects();
-  // initializeAbout();
-  // initializeContact();
 });
