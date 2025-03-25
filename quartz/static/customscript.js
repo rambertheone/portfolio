@@ -1,4 +1,27 @@
-// Store observers globally so we can manage them
+// First, define all initialization functions at the top level
+function initializeContact() {
+  var d = document,
+      w = "https://tally.so/widgets/embed.js",
+      v = function () {
+        "undefined" != typeof Tally
+          ? Tally.loadEmbeds()
+          : d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function (e) {
+              e.src = e.dataset.tallySrc;
+            });
+      };
+    if ("undefined" != typeof Tally) v();
+    else if (d.querySelector('script[src="' + w + '"]') == null) {
+      var s = d.createElement("script");
+      s.src = w;
+      s.onload = v;
+      s.onerror = function () {
+        console.error("Failed to load Tally script.");
+      };
+      d.body.appendChild(s);
+    }
+}
+
+// Store observers globally
 const observers = {
   youtube: null,
   about: null,
@@ -6,43 +29,62 @@ const observers = {
   contact: null
 };
 
-// Function to safely disconnect and reconnect observers
 function resetObserver(key) {
-  if (observers[key]) {
-    observers[key].disconnect();
-  }
-  
-  const config = {
-    youtube: {
-      id: "youtube-latest",
-      callback: checkAndInitYouTube
-    },
-    about: {
-      id: "about",
-      callback: () => {
-        initializeAbout();
-        progressBar();
+  try {
+    if (observers[key]) {
+      observers[key].disconnect();
+    }
+    
+    const config = {
+      youtube: {
+        id: "youtube-latest",
+        callback: () => {
+          const container = document.getElementById("youtube-latest");
+          if (container) checkAndInitYouTube();
+        }
+      },
+      about: {
+        id: "about",
+        callback: () => {
+          const aboutSection = document.getElementById("about");
+          if (aboutSection) {
+            setTimeout(() => {
+              initializeAbout();
+              progressBar();
+            }, 50);
+          }
+        }
+      },
+      projects: {
+        id: "filter",
+        callback: () => {
+          const filterContainer = document.getElementById("filter");
+          if (filterContainer) initializeProjects();
+        }
+      },
+      contact: {
+        id: "contact",
+        callback: () => {
+          const contactSection = document.getElementById("contact");
+          if (contactSection) initializeContact();
+        }
       }
-    },
-    projects: {
-      id: "filter",
-      callback: initializeProjects
-    },
-    contact: {
-      id: "contact",
-      callback: initializeContact
-    }
-  };
+    };
 
-  const { id, callback } = config[key];
-  
-  observers[key] = new MutationObserver((mutations) => {
-    if (document.getElementById(id)) {
-      callback();
-    }
-  });
+    if (!config[key]) return;
 
-  observers[key].observe(document.body, { childList: true, subtree: true });
+    const { id, callback } = config[key];
+    
+    observers[key] = new MutationObserver((mutations) => {
+      if (document.getElementById(id)) {
+        callback();
+      }
+    });
+
+    observers[key].observe(document.body, { childList: true, subtree: true });
+  } catch (error) {
+    console.error(`Error in resetObserver for ${key}:`, error);
+  }
 }
 
 // Function to handle navigation events
@@ -67,33 +109,92 @@ function handleNavigation() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Initial setup
-  handleNavigation();
-  
-  // Handle navigation events
-  window.addEventListener('popstate', () => {
-    setTimeout(handleNavigation, 50);
-  });
-
-  // Handle link clicks
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('a');
-    if (link && link.hostname === window.location.hostname) {
+  try {
+    handleNavigation();
+    
+    window.addEventListener('popstate', () => {
       setTimeout(handleNavigation, 50);
-    }
-  });
+    });
+
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (link && link.hostname === window.location.hostname) {
+        setTimeout(handleNavigation, 50);
+      }
+    });
+  } catch (error) {
+    console.error("Error in initialization:", error);
+  }
 });
 
-// Update your initialization functions to handle reconnection
+// Update checkAndInitYouTube to handle CORS errors
 function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
   if (!container) return;
 
-  // Only proceed if not already loaded or if content is missing
-  if (!container.querySelector('.video-container')) {
-    container.textContent = "Loading latest video...";
-    // ... rest of your YouTube loading logic ...
+  const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
+  const cacheKey = "youtube_latest_video";
+  const cacheExpiry = 3600000;
+
+  // Try to load from cache first
+  const cachedData = localStorage.getItem(cacheKey);
+  if (cachedData) {
+    try {
+      const { timestamp, videoData } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < cacheExpiry) {
+        renderVideo(videoData);
+        return;
+      }
+    } catch (e) {
+      console.error("Error parsing cached data:", e);
+    }
   }
+
+  // If no cache or expired, try to fetch
+  container.textContent = "Loading latest video...";
+  
+  fetch(apiUrl, {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'omit',
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.items && data.items.length > 0) {
+      const video = data.items[0];
+      localStorage.setItem(cacheKey, JSON.stringify({
+        timestamp: Date.now(),
+        videoData: video
+      }));
+      renderVideo(video);
+    } else {
+      container.innerHTML = "<p>No videos found.</p>";
+    }
+  })
+  .catch(error => {
+    console.error("Error fetching YouTube data:", error);
+    // On error, try to show cached content even if expired
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      try {
+        const { videoData } = JSON.parse(cachedData);
+        renderVideo(videoData);
+        container.innerHTML += "<p class='error-message'>Unable to fetch latest video. Showing cached content.</p>";
+      } catch (e) {
+        container.innerHTML = "<p>Error loading video content.</p>";
+      }
+    } else {
+      container.innerHTML = "<p>Error loading video content.</p>";
+    }
+  });
 }
 
 function initializeProjects() {
@@ -161,96 +262,6 @@ function InitializeProjects() {
   }
 }
 
-function CheckAndInitializeYouTube() {
-  const container = document.getElementById("youtube-latest");
-
-  const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
-  const cacheKey = "youtube_latest_video";
-  const cacheExpiry = 3600000;
-
-  function UnescapeHTML(html) {
-    const textArea = document.createElement("textarea");
-    textArea.innerHTML = html;
-    return textArea.value;
-  }
-
-  function RenderVideo(video) {
-    const videoId = video.id.videoId;
-    const title = video.snippet.title;
-    const publishedAt = new Date(video.snippet.publishedAt);
-    const thumbnailUrl =
-      video.snippet.thumbnails.maxres?.url ||
-      video.snippet.thumbnails.high?.url ||
-      video.snippet.thumbnails.medium.url;
-  
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = publishedAt.toLocaleDateString("en-US", options);
-  
-    const htmlString = `
-      <div class="video-container">
-        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
-          <img src="${thumbnailUrl}" alt="${title}">
-        </a>
-        <p class="video-caption">${title}</p>
-        <p class="video-date">${formattedDate}</p>
-      </div>
-    `;
-    container.innerHTML = UnescapeHTML(htmlString);
-    container.setAttribute("data-loaded", "true"); // Mark as loaded
-  }
-
-  async function GetLatestVideo() {
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      if (!data.items) {
-        console.log("No items found.");
-        container.innerHTML = UnescapeHTML("<p>No items found.</p>");
-        return;
-      }
-      if (data.items.length > 0) {
-        const video = data.items[0];
-        const cacheData = {
-          timestamp: Date.now(),
-          videoData: video,
-        };
-        localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-        RenderVideo(video);
-      } else {
-        console.log("No videos found.");
-        container.innerHTML = UnescapeHTML("<p>No videos found.</p>");
-      }
-    } catch (error) {
-      console.error("Error fetching YouTube data:", error);
-      container.innerHTML = UnescapeHTML("<p>Error loading latest video.</p>");
-    }
-  }
-
-  if (container.querySelector('.video-container') && container.getAttribute("data-loaded") === "true") {
-    return; 
-  }
-
-  container.textContent = "Loading latest video...";
-
-  const cachedData = localStorage.getItem(cacheKey);
-  if (cachedData) {
-    try {
-      const { timestamp, videoData } = JSON.parse(cachedData);
-      if (cacheExpiry > Date.now() - timestamp) {
-        RenderVideo(videoData);
-      } else {
-        localStorage.removeItem(cacheKey);
-        GetLatestVideo();
-      }
-    } catch (e) {
-      console.error("Error parsing cached data:", e);
-      GetLatestVideo();
-    }
-  } else {
-    GetLatestVideo();
-  }
-}
-
 function InitializeProgressBar() {
   document.querySelectorAll(".progress-bar").forEach((bar) => {
     if (bar.getAttribute("data-processed") === "true") return;
@@ -290,28 +301,6 @@ function InitializeAbout() {
       }
     });
   }
-}
-
-function InitializeContact() {
-  var d = document,
-      w = "https://tally.so/widgets/embed.js",
-      v = function () {
-        "undefined" != typeof Tally
-          ? Tally.loadEmbeds()
-          : d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function (e) {
-              e.src = e.dataset.tallySrc;
-            });
-      };
-    if ("undefined" != typeof Tally) v();
-    else if (d.querySelector('script[src="' + w + '"]') == null) {
-      var s = d.createElement("script");
-      s.src = w;
-      s.onload = v;
-      s.onerror = function () {
-        console.error("Failed to load Tally script.");
-      };
-      d.body.appendChild(s);
-    }
 }
 
 function SetupNavigationHandlers() {
