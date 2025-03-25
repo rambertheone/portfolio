@@ -115,7 +115,6 @@ function checkAndInitYouTube() {
         renderVideo(videoData);
       } else {
         // container.textContent = "Loading latest video...";
-        displayMobileYouTubeAlternative(container);
         localStorage.removeItem(cacheKey);
         getLatestVideo();
       }
