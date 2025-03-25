@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const youtubeObserver = new MutationObserver(function(mutations) {
       if (document.getElementById("youtube-latest")) {
         checkAndInitYouTube();
-        // youtubeObserver.disconnect(); // Disconnect once found and initialized
+        youtubeObserver.disconnect(); // Disconnect once found and initialized
       }
     });
     youtubeObserver.observe(document.body, { childList: true, subtree: true });
