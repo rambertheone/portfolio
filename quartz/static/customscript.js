@@ -201,7 +201,14 @@ function CheckAndInitializeYouTube() {
 
   async function GetLatestVideo() {
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
       const data = await response.json();
       if (!data.items) {
         console.log("No items found.");
