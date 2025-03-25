@@ -15,40 +15,24 @@ function resetObserver(key) {
   const config = {
     youtube: {
       id: "youtube-latest",
-      callback: () => {
-        const container = document.getElementById("youtube-latest");
-        if (container) checkAndInitYouTube();
-      }
+      callback: checkAndInitYouTube
     },
     about: {
       id: "about",
       callback: () => {
-        const aboutSection = document.getElementById("about");
-        if (aboutSection) {
-          setTimeout(() => {
-            initializeAbout();
-            progressBar();
-          }, 50);
-        }
+        initializeAbout();
+        progressBar();
       }
     },
     projects: {
       id: "filter",
-      callback: () => {
-        const filterContainer = document.getElementById("filter");
-        if (filterContainer) initializeProjects();
-      }
+      callback: initializeProjects
     },
     contact: {
       id: "contact",
-      callback: () => {
-        const contactSection = document.getElementById("contact");
-        if (contactSection) initializeContact();
-      }
+      callback: initializeContact
     }
   };
-
-  if (!config[key]) return;
 
   const { id, callback } = config[key];
   
@@ -66,28 +50,18 @@ function handleNavigation() {
   // Reset all observers
   Object.keys(observers).forEach(key => resetObserver(key));
   
-  // Only initialize components if their containers exist
-  const components = {
-    youtube: document.getElementById("youtube-latest"),
-    about: document.getElementById("about"),
-    filter: document.getElementById("filter"),
-    contact: document.getElementById("contact")
-  };
-
-  if (components.youtube) {
+  // Initialize components based on current content
+  if (document.getElementById("youtube-latest")) {
     checkAndInitYouTube();
   }
-
-  if (components.about) {
+  if (document.getElementById("about")) {
     initializeAbout();
     progressBar();
   }
-
-  if (components.filter) {
+  if (document.getElementById("filter")) {
     initializeProjects();
   }
-
-  if (components.contact) {
+  if (document.getElementById("contact")) {
     initializeContact();
   }
 }
@@ -113,35 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // Update your initialization functions to handle reconnection
 function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
-  // Return early if container doesn't exist on this page
-  if (!container) {
-    return;
-  }
-
-  // Rest of the function remains the same
-  const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
-  const cacheKey = "youtube_latest_video";
-  const cacheExpiry = 3600000;
+  if (!container) return;
 
   // Only proceed if not already loaded or if content is missing
   if (!container.querySelector('.video-container')) {
     container.textContent = "Loading latest video...";
-    
-    const cachedData = localStorage.getItem(cacheKey);
-    if (cachedData) {
-      try {
-        const { timestamp, videoData } = JSON.parse(cachedData);
-        if (Date.now() - timestamp < cacheExpiry) {
-          renderVideo(videoData);
-          return;
-        } else {
-          localStorage.removeItem(cacheKey);
-        }
-      } catch (e) {
-        console.error("Error parsing cached data:", e);
-      }
-    }
-    getLatestVideo();
+    // ... rest of your YouTube loading logic ...
   }
 }
 
