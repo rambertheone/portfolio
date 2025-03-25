@@ -114,7 +114,8 @@ function checkAndInitYouTube() {
       if (cacheExpiry > Date.now() - timestamp) {
         renderVideo(videoData);
       } else {
-        container.textContent = "Loading latest video...";
+        // container.textContent = "Loading latest video...";
+        displayMobileYouTubeAlternative(container);
         localStorage.removeItem(cacheKey);
         getLatestVideo();
       }
