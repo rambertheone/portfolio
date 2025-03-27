@@ -134,11 +134,13 @@ function checkAndInitYouTube() {
     } catch (error) {
       console.error("Error fetching YouTube data:", error);
       container.innerHTML = unescapeHTML(`
+        <div class="video-container">
          <a href="https://www.youtube.com/watch?v=OV1FlZfwZRA" target="_blank">
           <img src="https://i.ytimg.com/vi/OV1FlZfwZRA/hqdefault.jpg" alt="Première journée de stage">
         </a>
         <p class="video-caption">Première journée de stage</p>
         <p class="video-date">March 25, 2025</p>
+        </div>
       `);
     }
   }
