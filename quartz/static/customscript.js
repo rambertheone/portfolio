@@ -1,6 +1,5 @@
 // Store observers globally so we can manage them
 const observers = {
-  youtube: null,
   about: null,
   projects: null,
   contact: null
@@ -13,15 +12,11 @@ function resetObserver(key) {
   }
   
   const config = {
-    youtube: {
-      id: "youtube-latest",
-      callback: checkAndInitYouTube
-    },
     about: {
       id: "about",
       callback: () => {
         initializeAbout();
-        progressBar();
+        initializeProgressBar();
       }
     },
     projects: {
@@ -47,7 +42,7 @@ function resetObserver(key) {
 
 // Function to handle navigation events
 function handleNavigation() {
-  // Reset all observers
+  // Reset all observers (except YouTube)
   Object.keys(observers).forEach(key => resetObserver(key));
   
   // Initialize components based on current content
@@ -56,7 +51,7 @@ function handleNavigation() {
   }
   if (document.getElementById("about")) {
     initializeAbout();
-    progressBar();
+    initializeProgressBar();
   }
   if (document.getElementById("filter")) {
     initializeProjects();
@@ -66,115 +61,25 @@ function handleNavigation() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Initial setup
-  handleNavigation();
-  
-  // Handle navigation events
-  window.addEventListener('popstate', () => {
-    setTimeout(handleNavigation, 50);
-  });
-
-  // Handle link clicks
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('a');
-    if (link && link.hostname === window.location.hostname) {
-      setTimeout(handleNavigation, 50);
-    }
-  });
-});
-
-// Update your initialization functions to handle reconnection
+// YouTube initialization
 function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
   if (!container) return;
 
-  // Only proceed if not already loaded or if content is missing
-  if (!container.querySelector('.video-container')) {
-    container.textContent = "Loading latest video...";
-    // ... rest of your YouTube loading logic ...
-  }
-}
-
-function initializeProjects() {
-  if (!document.querySelector(".filter-container")) return;
-
-  const filterButtons = document.querySelectorAll(".filter-button");
-  const projectCards = document.querySelectorAll(".project-card");
-
-  // Clean up existing listeners
-  filterButtons.forEach(button => {
-    const newButton = button.cloneNode(true);
-    button.parentNode.replaceChild(newButton, button);
-  });
-
-  // Reattach listeners
-  document.querySelectorAll(".filter-button").forEach(button => {
-    button.addEventListener("click", handleFilterClick);
-  });
-}
-
-function initializeAbout() {
-  const filterButtons = document.querySelectorAll(".filter-button");
-  if (!filterButtons.length) return;
-
-  // Clean up existing listeners
-  filterButtons.forEach(button => {
-    const newButton = button.cloneNode(true);
-    button.parentNode.replaceChild(newButton, button);
-  });
-
-  // Reattach listeners
-  document.querySelectorAll(".filter-button").forEach(button => {
-    button.addEventListener("click", handleFilterClick);
-  });
-}
-
-function InitializeProjects() {
-  if (!document.querySelector(".filter-container")) return;
-
-  const filterButtons = document.querySelectorAll(".filter-button");
-  const projectCards = document.querySelectorAll(".project-card");
-
-  // Remove existing event listeners to avoid duplicates
-  filterButtons.forEach(button => {
-    button.removeEventListener("click", HandleFilterClick);
-    button.addEventListener("click", HandleFilterClick);
-  });
-
-  function HandleFilterClick() {
-    filterButtons.forEach(btn => btn.classList.remove("active"));
-    this.classList.add("active");
-    const filterValue = this.getAttribute("data-filter");
-
-    localStorage.setItem("selectedFilter", filterValue);
-
-    projectCards.forEach(card => {
-      const tagElement = card.children[0].children[1];
-      const tag = tagElement ? tagElement.classList[1] : "";
-      if (filterValue === "all" || tag.includes(`tag-${filterValue}`)) {
-        card.style.display = "";
-      } else {
-        card.style.display = "none";
-      }
-    });
-  }
-}
-
-function CheckAndInitializeYouTube() {
-  const container = document.getElementById("youtube-latest");
-
+  // Remove the data-loaded check to ensure it always tries to load
+  container.textContent = "Loading latest video...";
+  
   const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
   const cacheKey = "youtube_latest_video";
   const cacheExpiry = 3600000;
 
-  function UnescapeHTML(html) {
+  function unescapeHTML(html) {
     const textArea = document.createElement("textarea");
     textArea.innerHTML = html;
     return textArea.value;
   }
 
-  function RenderVideo(video) {
+  function renderVideo(video) {
     const videoId = video.id.videoId;
     const title = video.snippet.title;
     const publishedAt = new Date(video.snippet.publishedAt);
@@ -195,11 +100,10 @@ function CheckAndInitializeYouTube() {
         <p class="video-date">${formattedDate}</p>
       </div>
     `;
-    container.innerHTML = UnescapeHTML(htmlString);
-    container.setAttribute("data-loaded", "true"); // Mark as loaded
+    container.innerHTML = unescapeHTML(htmlString);
   }
 
-  async function GetLatestVideo() {
+  async function getLatestVideo() {
     try {
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -208,11 +112,11 @@ function CheckAndInitializeYouTube() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-    });
+      });
       const data = await response.json();
       if (!data.items) {
         console.log("No items found.");
-        container.innerHTML = UnescapeHTML("<p>No items found.</p>");
+        container.innerHTML = unescapeHTML("<p>No items found.</p>");
         return;
       }
       if (data.items.length > 0) {
@@ -222,43 +126,80 @@ function CheckAndInitializeYouTube() {
           videoData: video,
         };
         localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-        RenderVideo(video);
+        renderVideo(video);
       } else {
         console.log("No videos found.");
-        container.innerHTML = UnescapeHTML("<p>No videos found.</p>");
+        container.innerHTML = unescapeHTML("<p>No videos found.</p>");
       }
     } catch (error) {
       console.error("Error fetching YouTube data:", error);
-      container.innerHTML = UnescapeHTML("<p>Error loading latest video.</p>");
+      container.innerHTML = unescapeHTML("<p>Error loading latest video.</p>");
     }
   }
 
-  if (container.querySelector('.video-container') && container.getAttribute("data-loaded") === "true") {
-    return; 
-  }
-
-  container.textContent = "Loading latest video...";
-
+  // Try to load from cache first
   const cachedData = localStorage.getItem(cacheKey);
   if (cachedData) {
     try {
       const { timestamp, videoData } = JSON.parse(cachedData);
       if (cacheExpiry > Date.now() - timestamp) {
-        RenderVideo(videoData);
-      } else {
-        localStorage.removeItem(cacheKey);
-        GetLatestVideo();
+        renderVideo(videoData);
+        return;
       }
+      localStorage.removeItem(cacheKey);
     } catch (e) {
       console.error("Error parsing cached data:", e);
-      GetLatestVideo();
     }
-  } else {
-    GetLatestVideo();
+  }
+
+  // If no cache or expired, fetch new data
+  getLatestVideo();
+}
+
+// Projects initialization
+function initializeProjects() {
+  const container = document.getElementById("filter");
+  if (!container) return;
+
+  const filterButtons = document.querySelectorAll(".filter-button");
+  const projectCards = document.querySelectorAll(".project-card");
+
+  // Clean up existing listeners
+  filterButtons.forEach(button => {
+    button.removeEventListener("click", handleFilterClick);
+    button.addEventListener("click", handleFilterClick);
+  });
+
+  function handleFilterClick() {
+    filterButtons.forEach(btn => btn.classList.remove("active"));
+    this.classList.add("active");
+    const filterValue = this.getAttribute("data-filter");
+
+    localStorage.setItem("selectedFilter", filterValue);
+
+    projectCards.forEach(card => {
+      const tagElement = card.children[0]?.children[1];
+      const tag = tagElement ? tagElement.classList[1] : "";
+      if (filterValue === "all" || tag.includes(`tag-${filterValue}`)) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
+
+  // Apply stored filter if exists
+  const storedFilter = localStorage.getItem("selectedFilter");
+  if (storedFilter) {
+    const button = document.querySelector(`.filter-button[data-filter="${storedFilter}"]`);
+    if (button) {
+      button.click();
+    }
   }
 }
 
-function InitializeProgressBar() {
+// Progress bar initialization
+function initializeProgressBar() {
   document.querySelectorAll(".progress-bar").forEach((bar) => {
     if (bar.getAttribute("data-processed") === "true") return;
 
@@ -273,7 +214,8 @@ function InitializeProgressBar() {
   });
 }
 
-function InitializeAbout() {
+// About section initialization
+function initializeAbout() {
   const filterButtons = document.querySelectorAll(".filter-button");
   if (!filterButtons.length) return;
 
@@ -299,7 +241,8 @@ function InitializeAbout() {
   }
 }
 
-function InitializeContact() {
+// Contact form initialization
+function initializeContact() {
   var d = document,
       w = "https://tally.so/widgets/embed.js",
       v = function () {
@@ -321,77 +264,37 @@ function InitializeContact() {
     }
 }
 
-function SetupNavigationHandlers() {
-  document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'A' || e.target.closest('a')) {
-      const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
-      
-      if (link.hostname === window.location.hostname && !link.target) {
-        setTimeout(() => {
-          CheckAndInitializeYouTube();
-        }, 100);
+// Initialize everything when DOM is loaded
+document.addEventListener("DOMContentLoaded", function () {
+  // Initial setup
+  handleNavigation();
+  
+  // Handle navigation events
+  window.addEventListener('popstate', () => {
+    const youtubeContainer = document.getElementById("youtube-latest");
+    if (youtubeContainer) {
+      youtubeContainer.removeAttribute("data-loaded");
+      checkAndInitYouTube();
+    }
+    setTimeout(handleNavigation, 50);
+  });
+
+  // Handle link clicks
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (link && link.hostname === window.location.hostname) {
+      const youtubeContainer = document.getElementById("youtube-latest");
+      if (youtubeContainer) {
+        youtubeContainer.removeAttribute("data-loaded");
+        checkAndInitYouTube();
       }
+      setTimeout(handleNavigation, 50);
     }
   });
-  
-  window.addEventListener('popstate', function() {
-    setTimeout(() => {
-      CheckAndInitializeYouTube();
-    }, 100);
-  });
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-  
-  SetupNavigationHandlers();
-  
-  if (document.getElementById("youtube-latest")) {
-    CheckAndInitializeYouTube();
-  } else {
-    const youtubeObserver = new MutationObserver(function(mutations) {
-      if (document.getElementById("youtube-latest")) {
-        CheckAndInitializeYouTube();
-        // youtubeObserver.disconnect();
-      }
-    });
-    youtubeObserver.observe(document.body, { childList: true, subtree: true });
-  }
-  
-  if (document.getElementById("about")) {
-    InitializeAbout();
-    InitializeProgressBar();
-  } else {
-    const aboutObserver = new MutationObserver(function(mutations) {
-      if (document.getElementById("about")) {
-        InitializeAbout();
-        InitializeProgressBar();
-        // aboutObserver.disconnect();
-      }
-    });
-    aboutObserver.observe(document.body, { childList: true, subtree: true });
-  }
-  
-  if (document.getElementById("filter")) {
-    InitializeProjects();
-  } else {
-    const projectsObserver = new MutationObserver(function(mutations) {
-      if (document.getElementById("filter")) {
-        InitializeProjects();
-        // projectsObserver.disconnect();
-      }
-    });
-    projectsObserver.observe(document.body, { childList: true, subtree: true });
-  }
-  
-  if (document.getElementById("contact")) {
-    InitializeContact();
-  } else {
-    const contactObserver = new MutationObserver(function(mutations) {
-      if (document.getElementById("contact")) {
-        InitializeContact();
-        // contactObserver.disconnect();
-      }
-    });
-    contactObserver.observe(document.body, { childList: true, subtree: true });
+  // Initial YouTube check
+  const youtubeContainer = document.getElementById("youtube-latest");
+  if (youtubeContainer) {
+    checkAndInitYouTube();
   }
 });
