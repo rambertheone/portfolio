@@ -66,12 +66,29 @@ function checkAndInitYouTube() {
   const container = document.getElementById("youtube-latest");
   if (!container) return;
 
-  // Remove the data-loaded check to ensure it always tries to load
   container.textContent = "Loading latest video...";
   
   const apiUrl = `https://portfolio-backend-rambertheones-projects.vercel.app/api/youtube`;
   const cacheKey = "youtube_latest_video";
   const cacheExpiry = 3600000;
+
+  // Check if we're in development mode
+  const isDevelopment = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1';
+
+  // Development fallback data
+  const fallbackVideo = {
+    id: { videoId: "OV1FlZfwZRA" },
+    snippet: {
+      title: "Latest Video Title",
+      publishedAt: new Date().toISOString(),
+      thumbnails: {
+        medium: {
+          url: "https://i.ytimg.com/vi/YOUR_VIDEO_ID/mqdefault.jpg"
+        }
+      }
+    }
+  };
 
   function unescapeHTML(html) {
     const textArea = document.createElement("textarea");
@@ -104,21 +121,28 @@ function checkAndInitYouTube() {
   }
 
   async function getLatestVideo() {
+    // If in development, use fallback data
+    if (isDevelopment) {
+      console.log("Development mode: using fallback data");
+      renderVideo(fallbackVideo);
+      return;
+    }
+
     try {
       const response = await fetch(apiUrl, {
         method: 'GET',
         mode: 'cors',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+          'Accept': 'application/json'
         },
+        credentials: 'omit'
       });
+      
       const data = await response.json();
       if (!data.items) {
-        console.log("No items found.");
-        container.innerHTML = unescapeHTML("<p>No items found.</p>");
-        return;
+        throw new Error('No items found');
       }
+      
       if (data.items.length > 0) {
         const video = data.items[0];
         const cacheData = {
@@ -128,16 +152,33 @@ function checkAndInitYouTube() {
         localStorage.setItem(cacheKey, JSON.stringify(cacheData));
         renderVideo(video);
       } else {
-        console.log("No videos found.");
-        container.innerHTML = unescapeHTML("<p>No videos found.</p>");
+        throw new Error('No videos found');
       }
     } catch (error) {
       console.error("Error fetching YouTube data:", error);
-      container.innerHTML = unescapeHTML("<p>Error loading latest video.</p>");
+      
+      // Try to use cached data
+      const cachedData = localStorage.getItem(cacheKey);
+      if (cachedData) {
+        try {
+          const { videoData } = JSON.parse(cachedData);
+          renderVideo(videoData);
+          container.innerHTML += "<p style='font-size: 0.8em; color: #666;'>Using cached data</p>";
+        } catch (e) {
+          container.innerHTML = unescapeHTML("<p>Error loading latest video.</p>");
+        }
+      } else {
+        // If no cache and in development, use fallback
+        if (isDevelopment) {
+          renderVideo(fallbackVideo);
+        } else {
+          container.innerHTML = unescapeHTML("<p>Error loading latest video.</p>");
+        }
+      }
     }
   }
 
-  // Try to load from cache first
+  // Try cache first
   const cachedData = localStorage.getItem(cacheKey);
   if (cachedData) {
     try {
@@ -152,7 +193,7 @@ function checkAndInitYouTube() {
     }
   }
 
-  // If no cache or expired, fetch new data
+  // If no valid cache, get new data
   getLatestVideo();
 }
 
