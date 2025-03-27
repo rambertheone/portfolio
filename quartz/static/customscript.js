@@ -109,10 +109,8 @@ function checkAndInitYouTube() {
         method: 'GET',
         mode: 'cors',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache', // Add this
-          'Pragma': 'no-cache' // Add this
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
       });
       const data = await response.json();
