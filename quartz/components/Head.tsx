@@ -124,7 +124,7 @@ export default (() => {
     const iconPath = joinSegments(baseDir, "static/logo.svg")
     const scriptPath = joinSegments(baseDir, "static/customscript.js")
 
-    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
+    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/logo-preview.png`
     // "static/social-images/slug-filename.md.webp"
     const ogImageGeneratedPath = `https://${cfg.baseUrl}/${fileDir.replace(
       `${ctx.argv.output}/`,
